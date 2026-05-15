@@ -4,9 +4,6 @@ const inputLine = document.getElementById('input-line');
 const terminalInput = document.getElementById('terminal-input');
 const timestampEl = document.getElementById('timestamp');
 
-
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUt5jwpOGtOksKnoFBx7S2kFWre1py_mf3QlyImNrrp02eMoOxi5m4hVyrtLfWLdWu5Q/exec";
-
 const initialLogs = [
     { text: "> RELAYING STRUCTURE UPDATE...", color: "text-[#00f3ff] font-bold" },
     { text: "> INDEXING 01_BRIEFING THROUGH 07_OPERATORS", color: "text-white/60" },
@@ -35,55 +32,6 @@ async function runInitialLogs() {
     }
     inputLine.classList.remove('hidden');
     terminalInput.focus();
-}
-
-const registrationForm = document.querySelector('#enrollment form');
-if (registrationForm) {
-    registrationForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const transmitBtn = registrationForm.querySelector('.transmit-btn');
-        transmitBtn.disabled = true;
-        transmitBtn.innerText = "TRANSMITTING...";
-
-        const data = {
-            email: registrationForm.querySelector('input[type="email"]').value,
-            name: registrationForm.querySelector('input[placeholder="Operator Name"]').value,
-            class: registrationForm.querySelector('select').value,
-            section: registrationForm.querySelector('input[placeholder="Ex: A, B, C"]').value,
-            events: Array.from(registrationForm.querySelector('select[multiple]').selectedOptions).map(opt => opt.value).join(', '),
-            timestamp: new Date().toLocaleString()
-        };
-
-        addLog("> UPLOADING_DATA_PACKET...", "text-[#00f3ff]");
-
-        try {
-           
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', 
-                cache: 'no-cache',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            
-            addLog("> SUCCESS: PACKET_RECEIVED_BY_CENTRAL_NODE.", "text-[#00f3ff] font-bold");
-            addLog("> CONFIRMATION_EMAIL_QUEUED.", "text-white/40");
-            
-            registrationForm.reset();
-            transmitBtn.disabled = false;
-            transmitBtn.innerText = "Submit";
-            
-            setTimeout(() => {
-                window.location.hash = "briefing";
-            }, 3000);
-
-        } catch (error) {
-            addLog(`> CRITICAL_FAILURE: UNABLE TO SYNC WITH MATRIX`, "text-red-500");
-            transmitBtn.disabled = false;
-            transmitBtn.innerText = "Retry Transmission";
-        }
-    });
 }
 
 function handleCommand(cmd) {
