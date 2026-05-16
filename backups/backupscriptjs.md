@@ -1,12 +1,18 @@
-
 :root {
+    /* The Midnight Matrix Base */
     --dark-void: #020712;
     --dark-card: #051024;
+    
+    /* The High-Frequency Streams */
     --cyan-accent: #00f3ff;
     --cyan-glow: rgba(0, 243, 255, 0.3);
+    
+    /* The Singularity Core (Magenta) */
     --magenta-core: #d900bc;
     --magenta-bright: #ff3df2;
     --magenta-glow: rgba(217, 0, 188, 0.5);
+    
+    /* Global Overrides */
     --dark: var(--dark-void);
     --neon: var(--cyan-accent);
     --magenta: var(--magenta-core);
@@ -18,87 +24,13 @@ body {
     font-family: 'JetBrains Mono', monospace;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    /* Adding the radial depth from your asset */
     background-image: 
         radial-gradient(at 50% 0%, rgba(217, 0, 188, 0.15) 0%, transparent 50%),
         linear-gradient(180deg, var(--dark-void) 0%, #010307 100%);
     background-attachment: fixed;
 }
 
-/* --- THE LOGO ENGINE --- */
-.logo-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    margin: 0 0 10px 0;
-}
-
-.logo-hex-frame {
-    position: relative;
-    width: 100px;
-    height: 115px;
-    background-color: transparent;
-    border-left: 3px solid var(--magenta-core);
-    border-right: 3px solid var(--magenta-core);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter: drop-shadow(0 0 10px var(--magenta-glow));
-    transition: all 0.3s ease;
-}
-
-.logo-hex-frame::before, .logo-hex-frame::after {
-    content: "";
-    position: absolute;
-    width: 70.71px;
-    height: 70.71px;
-    transform: scaleY(0.5774) rotate(-45deg);
-    background-color: transparent;
-    left: 11.64px;
-}
-
-.logo-hex-frame::before {
-    top: -35.35px;
-    border-top: 3px solid var(--magenta-core);
-    border-right: 3px solid var(--magenta-core);
-}
-
-.logo-hex-frame::after {
-    bottom: -35.35px;
-    border-bottom: 3px solid var(--magenta-core);
-    border-left: 3px solid var(--magenta-core);
-}
-
-.logo-text-inner {
-    font-size: 32px;
-    font-weight: 900;
-    color: white;
-    letter-spacing: -1px;
-    z-index: 2;
-    text-shadow: 0 0 8px var(--magenta-glow);
-}
-
-/* Nav specific sizing */
-.logo-nav-size {
-    width: 30px !important;
-    height: 35px !important;
-    border-left-width: 2px;
-    border-right-width: 2px;
-    margin: 0 10px;
-    filter: drop-shadow(0 0 5px var(--magenta-glow));
-}
-
-.logo-nav-size::before, .logo-nav-size::after {
-    width: 21.21px;
-    height: 21.21px;
-    left: 2.39px;
-}
-
-.logo-nav-size::before { top: -10.6px; border-top-width: 2px; border-right-width: 2px; }
-.logo-nav-size::after { bottom: -10.6px; border-bottom-width: 2px; border-left-width: 2px; }
-
-/* Existing Animations & Effects... */
 .scanline {
     width: 100%; height: 100px; z-index: 50;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, var(--cyan-glow) 50%, rgba(0, 0, 0, 0) 100%);
@@ -108,6 +40,7 @@ body {
 
 @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
 
+/* The Glitch Engine - Tuned for Magenta Core */
 .glitch {
     position: relative; 
     color: white; 
@@ -167,7 +100,7 @@ body {
     text-shadow: 0 0 8px var(--cyan-glow);
 }
 
-/* Updated Terminal */
+/* Updated Terminal - Cyan Border, Midnight Interior */
 .terminal-window {
     background: var(--dark-card);
     border: 1px solid var(--cyan-glow);
@@ -205,6 +138,7 @@ body {
     box-shadow: 0 0 10px var(--cyan-glow);
 }
 
+/* The Data Transmission Trigger (Magenta to Cyan Transition) */
 .transmit-btn {
     width: 100%; 
     background: linear-gradient(135deg, var(--magenta-core) 0%, #90007d 100%);
