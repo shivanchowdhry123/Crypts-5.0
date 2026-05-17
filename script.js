@@ -47,12 +47,24 @@ if (registrationForm) {
         transmitBtn.disabled = true;
         transmitBtn.innerText = "TRANSMITTING...";
 
+        // Extracting elements structurally to prevent brittle attribute-string crashes
+        const inputs = registrationForm.querySelectorAll('input');
+        const selects = registrationForm.querySelectorAll('select');
+
+        // Verify elements actually exist before pulling values, saving your console from another tantrum
+        if (inputs.length < 3 || selects.length < 2) {
+            addLog(`> ERROR: FORM_DOM_MISMATCH. VERIFY MARKUP INTEGRITY.`, "text-red-500");
+            transmitBtn.disabled = false;
+            transmitBtn.innerText = "Retry";
+            return;
+        }
+
         const data = {
-            email: registrationForm.querySelector('input[type="email"]').value,
-            name: registrationForm.querySelector('input[placeholder="Operator Name"]').value,
-            class: registrationForm.querySelector('select').value,
-            section: registrationForm.querySelector('input[placeholder="Ex: A, B, C"]').value,
-            events: Array.from(registrationForm.querySelector('select[multiple]').selectedOptions).map(opt => opt.value).join(', '),
+            email: inputs[0].value,
+            name: inputs[1].value,
+            class: selects[0].value,
+            section: inputs[2].value,
+            events: Array.from(selects[1].selectedOptions).map(opt => opt.value).join(', '),
             timestamp: new Date().toLocaleString()
         };
 
@@ -63,7 +75,7 @@ if (registrationForm) {
                 method: 'POST',
                 mode: 'no-cors', 
                 cache: 'no-cache',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(data)
             });
             
@@ -98,8 +110,7 @@ function handleCommand(cmd) {
         addLog("REDIRECTING_TO_PORTAL...", "text-[#ff00c1]");
         window.location.hash = "enrollment";
     } else if (command === 'status') {
-        addLog("SYSTEM_STATE: OPERATIONAL", "text-[#00f3ff]");
-        addLog("NODES_ACTIVE: 7/7", "text-[#00f3ff]");
+        addLog(`SYSTEM_STATE: OPERATIONAL`, "text-[#00f3ff]");
     } else if (command === 'about') {
         addLog("CRYPT 5.0 | OPG WORLD SCHOOL | TECHNICAL SYMPOSIUM", "text-white");
     } else if (command !== "") {
@@ -155,7 +166,6 @@ function initNavigation() {
     }
 }
 
-// Fallback safety checkpoint to verify ready state before attaching triggers
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initNavigation);
 } else {
