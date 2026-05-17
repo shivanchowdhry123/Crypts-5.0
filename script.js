@@ -4,7 +4,7 @@ const inputLine = document.getElementById('input-line');
 const terminalInput = document.getElementById('terminal-input');
 const timestampEl = document.getElementById('timestamp');
 
-
+// GOOGLE SHEETS CONFIGURATION
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUt5jwpOGtOksKnoFBx7S2kFWre1py_mf3QlyImNrrp02eMoOxi5m4hVyrtLfWLdWu5Q/exec";
 
 const initialLogs = [
@@ -37,6 +37,7 @@ async function runInitialLogs() {
     terminalInput.focus();
 }
 
+// Handle Form Submission
 const registrationForm = document.querySelector('#enrollment form');
 if (registrationForm) {
     registrationForm.addEventListener('submit', async (e) => {
@@ -58,7 +59,6 @@ if (registrationForm) {
         addLog("> UPLOADING_DATA_PACKET...", "text-[#00f3ff]");
 
         try {
-           
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors', 
@@ -117,12 +117,50 @@ terminalInput.addEventListener('keydown', (e) => {
 
 terminalBody.addEventListener('click', () => terminalInput.focus());
 
-const menuToggle = document.getElementById('menu-toggle');
-const menuClose = document.getElementById('menu-close');
-const mobileMenu = document.getElementById('mobile-menu');
+// --- CONSOLIDATED NAVIGATION LOGIC (DE-ENCAPSULATED FROM HTML) ---
+function initNavigation() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-if (menuToggle) menuToggle.onclick = () => mobileMenu.classList.add('active');
-if (menuClose) menuClose.onclick = () => mobileMenu.classList.remove('active');
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
+        });
+    }
+
+    const hideMenu = () => {
+        if (mobileMenu) {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+        }
+    };
+
+    if (menuClose) {
+        menuClose.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideMenu();
+        });
+    }
+
+    if (mobileMenu) {
+        const links = mobileMenu.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                hideMenu();
+            });
+        });
+    }
+}
+
+// Fallback safety checkpoint to verify ready state before attaching triggers
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavigation);
+} else {
+    initNavigation();
+}
 
 window.onload = () => {
     setInterval(updateTimestamp, 1000);
